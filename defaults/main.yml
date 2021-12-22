@@ -17,7 +17,7 @@ log4j_detector_on_java_file_result:
 
 log4j_detector_on_java_dir_work: /opt/log4j_detector_on_java
 log4j_detector_on_java_dir_openjdk: "{{ log4j_detector_on_java_dir_work }}/openlogic-openjdk-jre-{{ log4j_detector_on_java_openjdk.version }}-linux"
-#log4j_detector_on_java_path_java: "{{ log4j_detector_on_java_dir_openjdk }}/bin/java"
+log4j_detector_on_java_path_java: "{{ log4j_detector_on_java_dir_openjdk }}/bin/java"
 
 log4j_detector_on_java_dir_create:
   - "{{ log4j_detector_on_java_dir_work }}"
