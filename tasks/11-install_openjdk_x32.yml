@@ -1,0 +1,34 @@
+---
+
+- name: Install Openlogic-openjdk-jre from the files directory
+  block:
+
+    - name: "Copy openlogic-openjdk-jre-{{ log4j_detector_on_java_openjdk.version }} to directory {{ log4j_detector_on_java_dir_work }}"
+      copy:
+        src: "openjdk/openlogic-openjdk-jre-{{ log4j_detector_on_java_openjdk.version }}-linux-x32.tar.gz"
+        dest: "{{ log4j_detector_on_java_dir_work }}/openlogic-openjdk-jre-{{ log4j_detector_on_java_openjdk.version }}-linux-x32.tar.gz"
+        mode: 0640
+
+    - name: "Get sha256sum of openlogic-openjdk-jre-{{ log4j_detector_on_java_openjdk.version }}-linux-x32.tar.gz"
+      stat:
+        path: "{{  log4j_detector_on_java_dir_work }}/openlogic-openjdk-jre-{{ log4j_detector_on_java_openjdk.version }}-linux-x32.tar.gz"
+        checksum_algorithm: sha256
+        get_checksum: yes
+      register: stat_result
+
+    - name: Verify sha256sum of OpenJDK x64 before extraction
+      fail:
+        msg: "sha256sum mismatch for file openlogic-openjdk-jre-{{ log4j_detector_on_java_openjdk.version }}-linux-x32.tar.gz"
+      when: stat_result.stat.checksum != log4j_detector_on_java_openjdk.checksum
+
+    - name: Extract OpenJDK x64 to temporary directory
+      unarchive:
+        src: "{{ log4j_detector_on_java_dir_work }}/openlogic-openjdk-jre-{{ log4j_detector_on_java_openjdk.version }}-linux-x32.tar.gz"
+        dest: "{{ log4j_detector_on_java_dir_openjdk }}"
+        extra_opts: [--strip-components=1]
+        remote_src: yes
+
+  when:
+    - log4j_detector_on_java_openjdk.install_from_files_directory
+    - log4j_detector_on_java_openjdk.install_from_web_server is not defined
+    - log4j_detector_on_java_openjdk.remove is not defined or log4j_detector_on_java_openjdk.remove | bool ==  False

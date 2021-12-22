@@ -1,0 +1,7 @@
+{% if log4j_result.stdout_lines %}
+{% for item in log4j_result.stdout_lines %}
+{{ ansible_date_time.date + ' ' + ansible_date_time.time + '@' + ansible_default_ipv4.address + '@' + ansible_fqdn + '@' + ansible_distribution + '@' + ansible_distribution_version + '@' + ansible_architecture + '@' + item }}
+{% endfor %}
+{% else %}
+{{ ansible_date_time.date + ' ' + ansible_date_time.time + '@' + ansible_default_ipv4.address + '@' + ansible_fqdn + '@' + ansible_distribution + '@' + ansible_distribution_version + '@' + ansible_architecture + '@No vulnerable Log4J versions found.' }}
+{% endif %}

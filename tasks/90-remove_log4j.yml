@@ -1,0 +1,17 @@
+---
+
+- name: "Remove file log4j-detector-{{ log4j_detector_on_java_log4j.version }}"
+  file:
+    state: absent
+    path: "{{ log4j_detector_on_java_dir_work }}/log4j-detector-{{ log4j_detector_on_java_log4j.version }}.jar"
+  when:
+    - log4j_detector_on_java_log4j.remove is defined
+    - log4j_detector_on_java_log4j.remove
+
+- name: "Remove directory log4j_detector_on_java_dir_work"
+  file:
+    state: absent
+    path: "{{ log4j_detector_on_java_dir_work }}"
+  when:
+    - log4j_detector_on_java_openjdk.remove is defined
+    - log4j_detector_on_java_openjdk.remove

@@ -1,0 +1,22 @@
+---
+
+- name: Install log4j_detector
+  block:
+
+    - name: Copy log4j_detector {{ log4j_detector_on_java_log4j.version  }} to {{ log4j_detector_on_java_dir_work }} directory
+      copy:
+        src: log4j_detector/log4j-detector-{{ log4j_detector_on_java_log4j.version }}.jar
+        dest: "{{ log4j_detector_on_java_dir_work }}/log4j-detector-{{ log4j_detector_on_java_log4j.version }}.jar"
+        mode: 0640
+
+    - name: Get sha256sum of log4j_detector
+      stat:
+        path: "{{ log4j_detector_on_java_dir_work }}/log4j-detector-{{ log4j_detector_on_java_log4j.version }}.jar"
+        checksum_algorithm: sha256
+        get_checksum: yes
+      register: stat_result
+
+    - name: Verify sha256sum of log4j_detector
+      fail:
+        msg: "sha256sum mismatch for file log4j-detector-{{ log4j_detector_on_java_log4j.version }}.jar"
+      when: stat_result.stat.checksum != log4j_detector_on_java_log4j.checksum

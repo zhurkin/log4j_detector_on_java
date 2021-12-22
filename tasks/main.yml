@@ -1,0 +1,61 @@
+---
+
+- name: Execution command java -version  and see output
+  block:
+     - name: Check if java is installed is not used OpenJdk
+       shell: "{{ log4j_detector_on_java_path_java |d('/usr/bin/java') }} -version"
+       register: java_result
+#       ignore_errors: True
+       changed_when: False
+
+     - debug:
+         msg: "Failed - Java is not installed"
+       when: java_result is failed
+
+     - debug:
+         msg: "Success - Java is installed"
+       when: java_result is success
+  when:
+    - log4j_detector_on_java_openjdk.install_from_files_directory is not defined or log4j_detector_on_java_openjdk.install_from_files_directory | bool == False
+    - log4j_detector_on_java_log4j.install_from_files_directory
+
+- name: Create Log4j_detector directory
+  file:
+    path: '{{ item }}'
+    owner: root
+    group: root
+    mode: 0755
+    state: directory
+  loop: "{{ log4j_detector_on_java_dir_create }}"
+
+- name: Install OpenJdk portable package x86_64
+  include_tasks: 10-install_openjdk_x64.yml
+  when:
+    - ansible_architecture == "x86_64"
+    - log4j_detector_on_java_openjdk is defined
+    - log4j_detector_on_java_openjdk.install_from_files_directory
+
+- name: Install OpenJdk portable package x32
+  include_tasks: 10-install_openjdk_x32.yml
+  when:
+    - ansible_architecture == "i386"
+    - log4j_detector_on_java_openjdk is defined
+    - log4j_detector_on_java_openjdk.install_from_files_directory
+
+- name: Install log4j-detector
+  include_tasks: 15-install_log4j_detector.yml
+  when:
+    - log4j_detector_on_java_log4j.install_from_files_directory
+
+- name: Run log4j-detector
+  include_tasks: 16-run_log4j_detector.yml
+  when:
+    - log4j_detector_on_java_log4j.install_from_files_directory
+
+- name: Write results log4j
+  include_tasks: 17-results_log4j.yml
+  when:
+    - log4j_detector_on_java_log4j.install_from_files_directory
+
+- name: Remove log4j-detector
+  include_tasks: 90-remove_log4j.yml

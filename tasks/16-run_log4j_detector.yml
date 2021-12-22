@@ -1,0 +1,13 @@
+---
+
+- name: "Run log4j-detector-{{ log4j_detector_on_java_log4j.version }}"
+  shell: "{{ log4j_detector_on_java_log4j.nice |d('/usr/bin/nice -n 0') }} {{ log4j_detector_on_java_path_java |d('/usr/bin/java') }} {{ log4j_detector_on_java_log4j.opts |d('-Xmx512m') }} \ -jar {{ log4j_detector_on_java_dir_work }}/log4j-detector-{{ log4j_detector_on_java_log4j.version }}.jar {{ log4j_detector_on_java_log4j.argument |d() }} {{ log4j_detector_on_java_log4j.path_search |d('/') }}"
+  register: log4j_result
+  failed_when: False
+  changed_when: False
+
+- name: Write report file
+  template:
+    src: log4j_result.j2
+    dest: "{{ log4j_detector_on_java_dir_work }}/log4j_result.csv"
+    mode: 0640
