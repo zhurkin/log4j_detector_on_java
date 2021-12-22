@@ -27,8 +27,3 @@
         dest: "{{ log4j_detector_on_java_dir_openjdk }}"
         extra_opts: [--strip-components=1]
         remote_src: yes
-
-  when:
-    - log4j_detector_on_java_openjdk.install_from_files_directory
-    - log4j_detector_on_java_openjdk.install_from_web_server is not defined
-    - log4j_detector_on_java_openjdk.remove is not defined or log4j_detector_on_java_openjdk.remove | bool ==  False
