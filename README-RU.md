@@ -72,16 +72,6 @@ path_report_on_controlled_node - Директория ну уарпвляюще�
 create - Создавать отчет или нет.
 filename - С каким именем, будет формироваться файл отчета. По умолчанию log4j_result
 csv - Формировать отчет в csv. ( сейчас только CSV, планируется сделать выбор json )
-
-- name: Fetch log4j CSV reports from hosts
-  fetch:
-    src: "{{ log4j_detector_on_java_dir_work }}/{{ log4j_detector_on_java_result.filename | d('log4j_result') }}.csv"
-    dest: "{{ log4j_detector_on_java_result.path_report_on_controlled_node | d('/tmp/log4j_detector_report/')}}/{{ inventory_hostname }}_{{ ansible_default_ipv4.address }}_{{ log4j_detector_on_java_result.filename | d('log4j_result') }}.csv"
-    flat: yes
-  when:
-    - log4j_detector_on_java_file_result.create
-    - log4j_detector_on_java_file_result.csv
-
 #### log4j_detector_on_java_log4
 
     log4j_detector_on_java_dir_work: /opt/log4j_detector_on_java
