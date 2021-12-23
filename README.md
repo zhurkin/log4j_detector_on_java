@@ -3,6 +3,8 @@ log4j_detector_on_java
 
 https://github.com/mergebase/log4j-detector
 
+[Readme-RU](./README-RU.md)
+
 Requirements
 ------------
 
@@ -18,8 +20,8 @@ Role Variables
       remove: no
 
     log4j_detector_on_java_log4j:
-      version: '2021.12.20'
-      checksum: '5bfdb4d60809f363218f238496d0c591de0a2565b40edb9b10d586024d9533d5'
+      version: '2021.12.22'
+      checksum: 'f19677f80589616a6c96f20c7d322ac0294950f06cfc1c880b77c34887aa0275'
       nice: 0
       opts: '-Xmx1024m'
       install_from_files_directory: yes
