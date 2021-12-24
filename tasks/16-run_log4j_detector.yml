@@ -9,5 +9,5 @@
 - name: Write report file
   template:
     src: log4j_result.j2
-    dest: "{{ log4j_detector_on_java_dir_work }}/log4j_result.csv"
+    dest: "{{ log4j_detector_on_java_dir_work }}/{{ log4j_detector_on_java_result.filename | d('log4j_result') }}.csv"
     mode: 0640
